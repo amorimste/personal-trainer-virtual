@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Personal Trainer Virtual — Seu treino sob medida</title>
+<meta name="description" content="Responda uma anamnese rápida e receba um treino semanal personalizado, com vídeos demonstrativos de cada exercício." />
+
+<!-- Fontes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Ícones (Font Awesome via CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===================== TOPO / NAVBAR ===================== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">
+      <i class="fa-solid fa-dumbbell"></i>
+      <span>Personal<strong>VIRTUAL</strong></span>
+    </div>
+    <button id="btn-tema" class="btn-icone" title="Alternar tema claro/escuro" aria-label="Alternar tema">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- ===================== TELA: BOAS-VINDAS ===================== -->
+  <section id="tela-boasvindas" class="tela tela-ativa">
+    <div class="container container-central">
+      <i class="fa-solid fa-person-running icone-hero"></i>
+      <h1>Seu Personal Trainer <span class="destaque">Virtual</span></h1>
+      <p class="subtitulo">Responda uma rápida anamnese e receba, na hora, uma ficha de treino semanal personalizada — com vídeos demonstrando cada exercício.</p>
+      <button id="btn-iniciar" class="btn btn-primario btn-grande">
+        Montar meu treino <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================== TELA: QUESTIONÁRIO (WIZARD) ===================== -->
+  <section id="tela-questionario" class="tela">
+    <div class="container">
+
+      <div class="progresso-wrapper">
+        <div class="progresso-info">
+          <span id="progresso-texto">Etapa 1 de 11</span>
+          <span id="progresso-percentual">0%</span>
+        </div>
+        <div class="progresso-barra">
+          <div id="progresso-fill" class="progresso-fill"></div>
+        </div>
+      </div>
+
+      <form id="form-anamnese">
+
+        <!-- 1. Nome -->
+        <div class="passo passo-ativo" data-passo="1">
+          <h2>Qual é o seu nome?</h2>
+          <p class="passo-desc">Vamos usar para personalizar sua ficha de treino.</p>
+          <input type="text" id="campo-nome" class="input-texto" placeholder="Digite seu nome" required autocomplete="given-name" />
+        </div>
+
+        <!-- 2. Objetivo -->
+        <div class="passo" data-passo="2">
+          <h2>Qual é o seu objetivo principal?</h2>
+          <div class="opcoes-cards" data-campo="objetivo">
+            <label class="card-opcao">
+              <input type="radio" name="objetivo" value="emagrecimento" required>
+              <i class="fa-solid fa-fire"></i><span>Emagrecimento</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="objetivo" value="hipertrofia">
+              <i class="fa-solid fa-dumbbell"></i><span>Hipertrofia (Ganho de Massa)</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="objetivo" value="condicionamento">
+              <i class="fa-solid fa-heart-pulse"></i><span>Condicionamento Físico Geral</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="objetivo" value="definicao">
+              <i class="fa-solid fa-bolt"></i><span>Definição Muscular</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="objetivo" value="reabilitacao">
+              <i class="fa-solid fa-kit-medical"></i><span>Reabilitação / Fortalecimento</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="objetivo" value="saude">
+              <i class="fa-solid fa-heart"></i><span>Saúde / Qualidade de Vida</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 3. Peso e altura -->
+        <div class="passo" data-passo="3">
+          <h2>Peso e altura</h2>
+          <p class="passo-desc">Usaremos para calcular seu IMC.</p>
+          <div class="linha-campos">
+            <div class="campo-grupo">
+              <label for="campo-peso">Peso atual (kg)</label>
+              <input type="number" id="campo-peso" class="input-texto" min="30" max="300" step="0.1" placeholder="Ex: 70" required>
+            </div>
+            <div class="campo-grupo">
+              <label for="campo-altura">Altura (cm)</label>
+              <input type="number" id="campo-altura" class="input-texto" min="100" max="250" step="1" placeholder="Ex: 170" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Idade e sexo -->
+        <div class="passo" data-passo="4">
+          <h2>Idade e sexo</h2>
+          <p class="passo-desc">Ajuda a calibrar carga e volume de treino.</p>
+          <div class="linha-campos">
+            <div class="campo-grupo">
+              <label for="campo-idade">Idade</label>
+              <input type="number" id="campo-idade" class="input-texto" min="12" max="100" placeholder="Ex: 28" required>
+            </div>
+            <div class="campo-grupo">
+              <label>Sexo</label>
+              <div class="opcoes-inline" data-campo="sexo">
+                <label class="chip-opcao"><input type="radio" name="sexo" value="feminino" required><span>Feminino</span></label>
+                <label class="chip-opcao"><input type="radio" name="sexo" value="masculino"><span>Masculino</span></label>
+                <label class="chip-opcao"><input type="radio" name="sexo" value="outro"><span>Outro</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Nível de experiência -->
+        <div class="passo" data-passo="5">
+          <h2>Qual seu nível de experiência com treino?</h2>
+          <div class="opcoes-cards" data-campo="nivel">
+            <label class="card-opcao">
+              <input type="radio" name="nivel" value="iniciante" required>
+              <i class="fa-solid fa-seedling"></i><span>Iniciante</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="nivel" value="intermediario">
+              <i class="fa-solid fa-chart-line"></i><span>Intermediário</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="nivel" value="avancado">
+              <i class="fa-solid fa-trophy"></i><span>Avançado</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 6. Frequência semanal -->
+        <div class="passo" data-passo="6">
+          <h2>Quantas vezes por semana pretende treinar?</h2>
+          <div class="opcoes-inline opcoes-numero" data-campo="frequencia">
+            <label class="chip-opcao"><input type="radio" name="frequencia" value="2" required><span>2x</span></label>
+            <label class="chip-opcao"><input type="radio" name="frequencia" value="3"><span>3x</span></label>
+            <label class="chip-opcao"><input type="radio" name="frequencia" value="4"><span>4x</span></label>
+            <label class="chip-opcao"><input type="radio" name="frequencia" value="5"><span>5x</span></label>
+            <label class="chip-opcao"><input type="radio" name="frequencia" value="6"><span>6x</span></label>
+          </div>
+        </div>
+
+        <!-- 7. Local de treino -->
+        <div class="passo" data-passo="7">
+          <h2>Onde você vai treinar?</h2>
+          <div class="opcoes-cards" data-campo="local">
+            <label class="card-opcao">
+              <input type="radio" name="local" value="casa-sem" required>
+              <i class="fa-solid fa-house"></i><span>Casa (sem equipamento)</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="local" value="casa-com">
+              <i class="fa-solid fa-house-chimney"></i><span>Casa (com halteres/elásticos)</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="local" value="academia">
+              <i class="fa-solid fa-building"></i><span>Academia completa</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 8. Tempo disponível -->
+        <div class="passo" data-passo="8">
+          <h2>Quanto tempo você tem por sessão de treino?</h2>
+          <div class="opcoes-inline opcoes-numero" data-campo="tempo">
+            <label class="chip-opcao"><input type="radio" name="tempo" value="30" required><span>30 min</span></label>
+            <label class="chip-opcao"><input type="radio" name="tempo" value="45"><span>45 min</span></label>
+            <label class="chip-opcao"><input type="radio" name="tempo" value="60"><span>60 min</span></label>
+            <label class="chip-opcao"><input type="radio" name="tempo" value="90"><span>90 min</span></label>
+          </div>
+        </div>
+
+        <!-- 9. Restrições de saúde -->
+        <div class="passo" data-passo="9">
+          <h2>Alguma condição de saúde ou restrição?</h2>
+          <p class="passo-desc">Marque todas que se aplicam. Vamos adaptar os exercícios.</p>
+          <div class="opcoes-checkbox" data-campo="restricoes">
+            <label class="check-opcao"><input type="checkbox" name="restricoes" value="joelho"><span>Dor ou lesão no joelho</span></label>
+            <label class="check-opcao"><input type="checkbox" name="restricoes" value="ombro"><span>Dor ou lesão no ombro</span></label>
+            <label class="check-opcao"><input type="checkbox" name="restricoes" value="lombar"><span>Dor lombar / problemas na coluna</span></label>
+            <label class="check-opcao"><input type="checkbox" name="restricoes" value="hipertensao"><span>Hipertensão</span></label>
+            <label class="check-opcao"><input type="checkbox" name="restricoes" value="cardiaco"><span>Problema cardíaco</span></label>
+            <label class="check-opcao"><input type="checkbox" name="restricoes" value="gestante"><span>Gestante</span></label>
+            <label class="check-opcao"><input type="checkbox" name="restricoes" value="nenhuma" id="check-nenhuma"><span>Nenhuma restrição</span></label>
+          </div>
+          <div class="campo-grupo">
+            <label for="campo-outra-restricao">Outra (opcional)</label>
+            <input type="text" id="campo-outra-restricao" class="input-texto" placeholder="Descreva outra condição, se houver">
+          </div>
+        </div>
+
+        <!-- 10. Atividade atual -->
+        <div class="passo" data-passo="10">
+          <h2>Você já pratica atividade física atualmente?</h2>
+          <div class="opcoes-cards" data-campo="atividadeAtual">
+            <label class="card-opcao">
+              <input type="radio" name="atividadeAtual" value="sedentario" required>
+              <i class="fa-solid fa-couch"></i><span>Sedentário</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="atividadeAtual" value="ativo-leve">
+              <i class="fa-solid fa-person-walking"></i><span>Ativo leve</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="atividadeAtual" value="ativo">
+              <i class="fa-solid fa-person-running"></i><span>Ativo</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 11. Foco muscular opcional -->
+        <div class="passo" data-passo="11">
+          <h2>Quer priorizar algum grupo muscular?</h2>
+          <p class="passo-desc">Opcional — deixe em branco para um treino equilibrado.</p>
+          <div class="opcoes-cards" data-campo="foco">
+            <label class="card-opcao">
+              <input type="radio" name="foco" value="">
+              <i class="fa-solid fa-ban"></i><span>Sem preferência</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="foco" value="pernas">
+              <i class="fa-solid fa-person-walking"></i><span>Pernas</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="foco" value="gluteos">
+              <i class="fa-solid fa-child-reaching"></i><span>Glúteos</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="foco" value="abdomen">
+              <i class="fa-solid fa-fire-flame-curved"></i><span>Abdômen</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="foco" value="biceps">
+              <i class="fa-solid fa-hand-fist"></i><span>Braços</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="foco" value="costas">
+              <i class="fa-solid fa-user"></i><span>Costas</span>
+            </label>
+            <label class="card-opcao">
+              <input type="radio" name="foco" value="full">
+              <i class="fa-solid fa-fire"></i><span>Full Body</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Navegação do wizard -->
+        <div class="wizard-nav">
+          <button type="button" id="btn-voltar" class="btn btn-secundario">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+          </button>
+          <button type="button" id="btn-avancar" class="btn btn-primario">
+            Avançar <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button type="submit" id="btn-finalizar" class="btn btn-primario btn-oculto">
+            Gerar meu treino <i class="fa-solid fa-check"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== TELA: LOADING ===================== -->
+  <section id="tela-loading" class="tela">
+    <div class="container container-central">
+      <div class="spinner"></div>
+      <h2 id="loading-texto">Montando seu treino...</h2>
+      <p id="loading-subtexto" class="passo-desc">Analisando suas respostas como um personal trainer faria.</p>
+    </div>
+  </section>
+
+  <!-- ===================== TELA: RESULTADO ===================== -->
+  <section id="tela-resultado" class="tela">
+    <div class="container">
+
+      <!-- Resumo do aluno -->
+      <div class="resumo-card">
+        <div class="resumo-topo">
+          <h2 id="resumo-nome">Treino de ...</h2>
+          <button id="btn-tema-2" class="btn-icone" title="Alternar tema" aria-label="Alternar tema">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </div>
+        <p id="resumo-frase" class="frase-motivacional"></p>
+        <div class="resumo-grid">
+          <div class="resumo-item">
+            <span class="resumo-label">Objetivo</span>
+            <span id="resumo-objetivo" class="resumo-valor">-</span>
+          </div>
+          <div class="resumo-item">
+            <span class="resumo-label">IMC</span>
+            <span id="resumo-imc" class="resumo-valor">-</span>
+          </div>
+          <div class="resumo-item">
+            <span class="resumo-label">Frequência</span>
+            <span id="resumo-frequencia" class="resumo-valor">-</span>
+          </div>
+          <div class="resumo-item">
+            <span class="resumo-label">Concluídos na semana</span>
+            <span id="resumo-concluidos" class="resumo-valor">0</span>
+          </div>
+        </div>
+        <p id="resumo-restricoes-aviso" class="aviso-restricao"></p>
+      </div>
+
+      <!-- Ações -->
+      <div class="acoes-topo">
+        <button id="btn-novo-treino" class="btn btn-secundario">
+          <i class="fa-solid fa-arrow-rotate-left"></i> Gerar novo treino
+        </button>
+        <button id="btn-imprimir" class="btn btn-secundario">
+          <i class="fa-solid fa-print"></i> Imprimir / PDF
+        </button>
+        <button id="btn-whatsapp" class="btn btn-secundario">
+          <i class="fa-brands fa-whatsapp"></i> Compartilhar
+        </button>
+      </div>
+
+      <!-- Lista de dias de treino -->
+      <div id="lista-treinos" class="lista-treinos"></div>
+
+      <p class="aviso-medico-inline">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        Este app não substitui acompanhamento profissional. Consulte um médico antes de iniciar qualquer atividade física.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== MODAL DE VÍDEO ===================== -->
+<div id="modal-video" class="modal-overlay">
+  <div class="modal-conteudo">
+    <div class="modal-cabecalho">
+      <h3 id="modal-titulo">Nome do exercício</h3>
+      <button id="modal-fechar" class="btn-icone" aria-label="Fechar vídeo"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-video-wrapper">
+      <iframe id="modal-iframe" src="" title="Vídeo demonstrativo do exercício" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p id="modal-dica" class="modal-dica"></p>
+  </div>
+</div>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="rodape">
+  <p><i class="fa-solid fa-triangle-exclamation"></i> Este app não substitui acompanhamento profissional. Consulte um médico antes de iniciar qualquer atividade física.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+/* ===================================================================
+   style.css — Personal Trainer Virtual
+   Dark mode como padrão, com opção de light mode via atributo
+   data-tema="claro" na tag <html>. Mobile-first.
+=================================================================== */
+
+:root {
+  /* Paleta esportiva: preto + verde neon */
+  --cor-fundo: #0d0f12;
+  --cor-fundo-alt: #15181d;
+  --cor-superficie: #1b1f26;
+  --cor-superficie-hover: #232833;
+  --cor-borda: #2a2f38;
+  --cor-texto: #f2f3f5;
+  --cor-texto-suave: #9aa1ac;
+  --cor-primaria: #39ff88;
+  --cor-primaria-escura: #1fce68;
+  --cor-secundaria: #ff5b3d;
+  --cor-perigo: #ff5b5b;
+  --cor-aviso-bg: rgba(255, 91, 61, 0.12);
+
+  --fonte-titulo: 'Poppins', sans-serif;
+  --fonte-texto: 'Inter', sans-serif;
+
+  --raio: 14px;
+  --raio-pequeno: 8px;
+  --sombra: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --transicao: 0.25s ease;
+}
+
+html[data-tema="claro"] {
+  --cor-fundo: #f4f6f8;
+  --cor-fundo-alt: #ffffff;
+  --cor-superficie: #ffffff;
+  --cor-superficie-hover: #eef1f4;
+  --cor-borda: #dde1e6;
+  --cor-texto: #14171a;
+  --cor-texto-suave: #5b6570;
+  --cor-primaria: #12a454;
+  --cor-primaria-escura: #0d8a45;
+  --cor-secundaria: #e8502f;
+  --cor-aviso-bg: rgba(232, 80, 47, 0.08);
+  --sombra: 0 8px 24px rgba(20, 23, 26, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--fonte-texto);
+  line-height: 1.5;
+  transition: background var(--transicao), color var(--transicao);
+}
+
+h1, h2, h3 { font-family: var(--fonte-titulo); font-weight: 700; margin: 0 0 8px; }
+p { margin: 0 0 12px; color: var(--cor-texto-suave); }
+
+.container { max-width: 720px; margin: 0 auto; padding: 24px 20px 40px; }
+.container-central { text-align: center; display: flex; flex-direction: column; align-items: center; padding-top: 12vh; }
+
+/* ===================== TOPBAR ===================== */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--cor-fundo-alt);
+  border-bottom: 1px solid var(--cor-borda);
+}
+.topbar-inner {
+  max-width: 720px; margin: 0 auto; padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--fonte-titulo); font-size: 1.1rem; }
+.logo i { color: var(--cor-primaria); font-size: 1.3rem; }
+.logo strong { color: var(--cor-primaria); }
+
+.btn-icone {
+  background: var(--cor-superficie); border: 1px solid var(--cor-borda); color: var(--cor-texto);
+  width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 1rem;
+  transition: background var(--transicao), transform var(--transicao);
+}
+.btn-icone:hover { background: var(--cor-superficie-hover); transform: scale(1.05); }
+
+/* ===================== TELAS (transições) ===================== */
+.tela { display: none; animation: fadeIn 0.4s ease; }
+.tela-ativa { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.icone-hero { font-size: 3.4rem; color: var(--cor-primaria); margin-bottom: 20px; }
+h1 { font-size: 2rem; }
+.destaque { color: var(--cor-primaria); }
+.subtitulo { max-width: 480px; font-size: 1.05rem; }
+
+/* ===================== BOTÕES ===================== */
+.btn {
+  font-family: var(--fonte-texto); font-weight: 600; font-size: 0.95rem;
+  padding: 13px 22px; border-radius: var(--raio-pequeno); border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+  transition: transform var(--transicao), background var(--transicao), opacity var(--transicao);
+}
+.btn:active { transform: scale(0.97); }
+.btn-primario { background: var(--cor-primaria); color: #04150a; }
+.btn-primario:hover { background: var(--cor-primaria-escura); }
+.btn-secundario { background: var(--cor-superficie); color: var(--cor-texto); border: 1px solid var(--cor-borda); }
+.btn-secundario:hover { background: var(--cor-superficie-hover); }
+.btn-grande { padding: 16px 30px; font-size: 1.05rem; margin-top: 10px; }
+.btn-oculto { display: none; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ===================== PROGRESSO ===================== */
+.progresso-wrapper { margin-bottom: 28px; }
+.progresso-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--cor-texto-suave); margin-bottom: 6px; }
+.progresso-barra { height: 8px; background: var(--cor-superficie); border-radius: 10px; overflow: hidden; border: 1px solid var(--cor-borda); }
+.progresso-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--cor-primaria-escura), var(--cor-primaria)); transition: width 0.35s ease; }
+
+/* ===================== FORM / WIZARD ===================== */
+.passo { display: none; animation: fadeIn 0.35s ease; }
+.passo-ativo { display: block; }
+.passo-desc { font-size: 0.92rem; margin-top: -4px; }
+
+.input-texto {
+  width: 100%; padding: 13px 14px; border-radius: var(--raio-pequeno);
+  border: 1px solid var(--cor-borda); background: var(--cor-superficie); color: var(--cor-texto);
+  font-family: var(--fonte-texto); font-size: 1rem; margin-top: 6px;
+}
+.input-texto:focus { outline: none; border-color: var(--cor-primaria); }
+
+.linha-campos { display: flex; gap: 16px; flex-wrap: wrap; }
+.campo-grupo { flex: 1; min-width: 140px; margin-bottom: 14px; }
+.campo-grupo label { display: block; font-size: 0.85rem; color: var(--cor-texto-suave); margin-bottom: 4px; }
+
+.opcoes-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
+.card-opcao {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 20px 12px; border: 1.5px solid var(--cor-borda); border-radius: var(--raio);
+  background: var(--cor-superficie); cursor: pointer; text-align: center; transition: all var(--transicao);
+}
+.card-opcao i { font-size: 1.6rem; color: var(--cor-texto-suave); transition: color var(--transicao); }
+.card-opcao span { font-size: 0.88rem; font-weight: 500; }
+.card-opcao input { position: absolute; opacity: 0; }
+.card-opcao:hover { background: var(--cor-superficie-hover); }
+.card-opcao:has(input:checked) { border-color: var(--cor-primaria); background: rgba(57, 255, 136, 0.08); }
+.card-opcao:has(input:checked) i { color: var(--cor-primaria); }
+
+.opcoes-inline { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.opcoes-numero { gap: 12px; }
+.chip-opcao {
+  position: relative; padding: 12px 20px; border: 1.5px solid var(--cor-borda); border-radius: 30px;
+  background: var(--cor-superficie); cursor: pointer; font-weight: 500; transition: all var(--transicao);
+}
+.chip-opcao input { position: absolute; opacity: 0; }
+.chip-opcao:hover { background: var(--cor-superficie-hover); }
+.chip-opcao:has(input:checked) { border-color: var(--cor-primaria); background: var(--cor-primaria); color: #04150a; }
+
+.opcoes-checkbox { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.check-opcao {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  border: 1.5px solid var(--cor-borda); border-radius: var(--raio-pequeno);
+  background: var(--cor-superficie); cursor: pointer; transition: all var(--transicao);
+}
+.check-opcao:hover { background: var(--cor-superficie-hover); }
+.check-opcao input { width: 18px; height: 18px; accent-color: var(--cor-primaria); }
+.check-opcao:has(input:checked) { border-color: var(--cor-primaria); }
+
+.wizard-nav { display: flex; justify-content: space-between; margin-top: 32px; gap: 12px; }
+
+/* ===================== LOADING ===================== */
+.spinner {
+  width: 64px; height: 64px; border-radius: 50%;
+  border: 5px solid var(--cor-borda); border-top-color: var(--cor-primaria);
+  animation: girar 0.9s linear infinite; margin-bottom: 24px;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+
+/* ===================== RESUMO (RESULTADO) ===================== */
+.resumo-card {
+  background: var(--cor-superficie); border: 1px solid var(--cor-borda); border-radius: var(--raio);
+  padding: 22px; margin-bottom: 20px; box-shadow: var(--sombra);
+}
+.resumo-topo { display: flex; justify-content: space-between; align-items: flex-start; }
+.frase-motivacional { font-style: italic; color: var(--cor-primaria); font-size: 0.92rem; }
+.resumo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 14px; }
+.resumo-item { display: flex; flex-direction: column; gap: 2px; }
+.resumo-label { font-size: 0.78rem; color: var(--cor-texto-suave); text-transform: uppercase; letter-spacing: 0.04em; }
+.resumo-valor { font-size: 1.15rem; font-weight: 700; font-family: var(--fonte-titulo); }
+.aviso-restricao {
+  margin-top: 14px; padding: 10px 14px; background: var(--cor-aviso-bg); border-radius: var(--raio-pequeno);
+  color: var(--cor-secundaria); font-size: 0.85rem; display: none;
+}
+.aviso-restricao.visivel { display: block; }
+
+.acoes-topo { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.acoes-topo .btn { flex: 1; min-width: 140px; font-size: 0.85rem; padding: 11px 14px; }
+
+/* ===================== LISTA DE TREINOS (CARDS POR DIA) ===================== */
+.lista-treinos { display: flex; flex-direction: column; gap: 14px; }
+.dia-card { background: var(--cor-superficie); border: 1px solid var(--cor-borda); border-radius: var(--raio); overflow: hidden; }
+.dia-cabecalho {
+  display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; cursor: pointer;
+}
+.dia-cabecalho:hover { background: var(--cor-superficie-hover); }
+.dia-titulo-wrap { display: flex; flex-direction: column; gap: 4px; }
+.dia-titulo { font-family: var(--fonte-titulo); font-weight: 700; font-size: 1.05rem; }
+.dia-subtitulo { font-size: 0.8rem; color: var(--cor-texto-suave); }
+.dia-progresso-mini { font-size: 0.8rem; color: var(--cor-primaria); font-weight: 600; }
+.dia-cabecalho .fa-chevron-down { transition: transform var(--transicao); color: var(--cor-texto-suave); }
+.dia-card.expandido .fa-chevron-down { transform: rotate(180deg); }
+
+.dia-corpo { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.dia-card.expandido .dia-corpo { max-height: 4000px; }
+.dia-corpo-inner { padding: 0 20px 20px; }
+
+.bloco-extra {
+  background: var(--cor-fundo-alt); border: 1px dashed var(--cor-borda); border-radius: var(--raio-pequeno);
+  padding: 12px 14px; margin-bottom: 14px; font-size: 0.88rem;
+}
+.bloco-extra strong { color: var(--cor-primaria); }
+.bloco-extra-clicavel { cursor: pointer; transition: background var(--transicao); }
+.bloco-extra-clicavel:hover { background: var(--cor-superficie-hover); }
+.bloco-extra-clicavel .exercicio-play { margin-left: 4px; white-space: nowrap; }
+
+.exercicio-item {
+  display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-top: 1px solid var(--cor-borda);
+}
+.exercicio-item:first-of-type { border-top: none; }
+.exercicio-check { margin-top: 4px; width: 20px; height: 20px; accent-color: var(--cor-primaria); flex-shrink: 0; cursor: pointer; }
+.exercicio-info { flex: 1; }
+.exercicio-nome-linha { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.exercicio-nome { font-weight: 600; }
+.exercicio-nome.concluido { text-decoration: line-through; color: var(--cor-texto-suave); }
+.exercicio-play { color: var(--cor-primaria); font-size: 0.85rem; }
+.exercicio-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; font-size: 0.8rem; color: var(--cor-texto-suave); }
+.exercicio-meta span { background: var(--cor-fundo-alt); padding: 3px 9px; border-radius: 20px; }
+.exercicio-dica { font-size: 0.8rem; margin-top: 6px; color: var(--cor-texto-suave); font-style: italic; }
+.exercicio-tag-restricao { color: var(--cor-secundaria); font-size: 0.75rem; }
+
+.aviso-medico-inline {
+  text-align: center; font-size: 0.8rem; margin: 24px 0 8px; color: var(--cor-texto-suave);
+}
+
+/* ===================== MODAL DE VÍDEO ===================== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100;
+  align-items: center; justify-content: center; padding: 16px;
+}
+.modal-overlay.visivel { display: flex; }
+.modal-conteudo {
+  background: var(--cor-fundo-alt); border-radius: var(--raio); max-width: 640px; width: 100%;
+  border: 1px solid var(--cor-borda); overflow: hidden;
+}
+.modal-cabecalho { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; }
+.modal-cabecalho h3 { margin: 0; font-size: 1rem; }
+.modal-video-wrapper { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
+.modal-video-wrapper iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.modal-dica { padding: 14px 18px; font-size: 0.85rem; margin: 0; }
+
+/* ===================== RODAPÉ ===================== */
+.rodape {
+  text-align: center; padding: 16px 20px; font-size: 0.75rem; color: var(--cor-texto-suave);
+  border-top: 1px solid var(--cor-borda); background: var(--cor-fundo-alt);
+}
+.rodape i { color: var(--cor-secundaria); margin-right: 6px; }
+
+/* ===================== RESPONSIVO ===================== */
+@media (min-width: 640px) {
+  .opcoes-cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media print {
+  .topbar, .acoes-topo, .wizard-nav, .rodape, #btn-tema, #btn-tema-2, .modal-overlay, .frase-motivacional { display: none !important; }
+  .dia-corpo { max-height: none !important; }
+  .dia-card { break-inside: avoid; }
+  body { background: #fff; color: #000; }
+  .resumo-card, .dia-card { border: 1px solid #ccc; }
+}
