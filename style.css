@@ -193,6 +193,52 @@ h1 { font-size: 2rem; }
 .acoes-topo { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
 .acoes-topo .btn { flex: 1; min-width: 140px; font-size: 0.85rem; padding: 11px 14px; }
 
+.btn-link {
+  background: none; border: none; color: var(--cor-primaria); cursor: pointer; font-size: 0.85rem;
+  padding: 2px 4px; vertical-align: middle;
+}
+.btn-full { width: 100%; margin-top: 12px; }
+
+/* ===================== COACH VIRTUAL (IA LOCAL) ===================== */
+.coach-card {
+  background: var(--cor-superficie); border: 1px solid var(--cor-borda); border-radius: var(--raio);
+  padding: 18px 20px; margin-bottom: 20px;
+}
+.coach-card h3 { display: flex; align-items: center; gap: 8px; font-size: 1rem; margin-bottom: 10px; }
+.coach-card h3 i { color: var(--cor-primaria); }
+.coach-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.coach-lista li {
+  font-size: 0.88rem; padding: 10px 12px; background: var(--cor-fundo-alt); border-radius: var(--raio-pequeno);
+  border-left: 3px solid var(--cor-primaria);
+}
+
+/* ===================== MODAL DE PESO (pequeno) ===================== */
+.modal-conteudo-pequena { max-width: 380px; }
+.modal-peso-corpo { padding: 6px 18px 20px; }
+.modal-peso-corpo label { display: block; font-size: 0.85rem; color: var(--cor-texto-suave); margin-bottom: 6px; }
+.historico-peso { margin-top: 18px; max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.historico-peso-item {
+  display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--cor-texto-suave);
+  padding: 6px 8px; border-bottom: 1px solid var(--cor-borda);
+}
+
+/* ===================== ERRO NO PLAYER DE VÍDEO ===================== */
+.modal-video-erro {
+  position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; text-align: center; padding: 24px; background: var(--cor-fundo-alt);
+}
+.modal-video-erro.visivel { display: flex; }
+.modal-video-erro i { font-size: 1.8rem; color: var(--cor-secundaria); }
+.modal-video-erro p { max-width: 380px; font-size: 0.88rem; }
+
+/* ===================== BOTÃO TROCAR EXERCÍCIO ===================== */
+.btn-trocar {
+  background: none; border: 1px solid var(--cor-borda); color: var(--cor-texto-suave); cursor: pointer;
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: all var(--transicao);
+}
+.btn-trocar:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
+
 /* ===================== LISTA DE TREINOS (CARDS POR DIA) ===================== */
 .lista-treinos { display: flex; flex-direction: column; gap: 14px; }
 .dia-card { background: var(--cor-superficie); border: 1px solid var(--cor-borda); border-radius: var(--raio); overflow: hidden; }
@@ -252,7 +298,7 @@ h1 { font-size: 2rem; }
 .modal-cabecalho { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; }
 .modal-cabecalho h3 { margin: 0; font-size: 1rem; }
 .modal-video-wrapper { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
-.modal-video-wrapper iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.modal-video-wrapper iframe, #modal-player { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .modal-dica { padding: 14px 18px; font-size: 0.85rem; margin: 0; }
 
 /* ===================== RODAPÉ ===================== */

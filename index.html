@@ -71,29 +71,30 @@
         <!-- 2. Objetivo -->
         <div class="passo" data-passo="2">
           <h2>Qual é o seu objetivo principal?</h2>
+          <p class="passo-desc">Pode marcar mais de um objetivo.</p>
           <div class="opcoes-cards" data-campo="objetivo">
             <label class="card-opcao">
-              <input type="radio" name="objetivo" value="emagrecimento" required>
+              <input type="checkbox" name="objetivo" value="emagrecimento">
               <i class="fa-solid fa-fire"></i><span>Emagrecimento</span>
             </label>
             <label class="card-opcao">
-              <input type="radio" name="objetivo" value="hipertrofia">
+              <input type="checkbox" name="objetivo" value="hipertrofia">
               <i class="fa-solid fa-dumbbell"></i><span>Hipertrofia (Ganho de Massa)</span>
             </label>
             <label class="card-opcao">
-              <input type="radio" name="objetivo" value="condicionamento">
+              <input type="checkbox" name="objetivo" value="condicionamento">
               <i class="fa-solid fa-heart-pulse"></i><span>Condicionamento Físico Geral</span>
             </label>
             <label class="card-opcao">
-              <input type="radio" name="objetivo" value="definicao">
+              <input type="checkbox" name="objetivo" value="definicao">
               <i class="fa-solid fa-bolt"></i><span>Definição Muscular</span>
             </label>
             <label class="card-opcao">
-              <input type="radio" name="objetivo" value="reabilitacao">
+              <input type="checkbox" name="objetivo" value="reabilitacao">
               <i class="fa-solid fa-kit-medical"></i><span>Reabilitação / Fortalecimento</span>
             </label>
             <label class="card-opcao">
-              <input type="radio" name="objetivo" value="saude">
+              <input type="checkbox" name="objetivo" value="saude">
               <i class="fa-solid fa-heart"></i><span>Saúde / Qualidade de Vida</span>
             </label>
           </div>
@@ -325,8 +326,20 @@
             <span class="resumo-label">Concluídos na semana</span>
             <span id="resumo-concluidos" class="resumo-valor">0</span>
           </div>
+          <div class="resumo-item">
+            <span class="resumo-label">Peso atual</span>
+            <span id="resumo-peso" class="resumo-valor">
+              - <button id="btn-atualizar-peso" class="btn-link" title="Atualizar peso"><i class="fa-solid fa-pen"></i></button>
+            </span>
+          </div>
         </div>
         <p id="resumo-restricoes-aviso" class="aviso-restricao"></p>
+      </div>
+
+      <!-- Coach Virtual (IA local, sem envio de dados) -->
+      <div class="coach-card">
+        <h3><i class="fa-solid fa-robot"></i> Coach Virtual</h3>
+        <ul id="coach-lista" class="coach-lista"></ul>
       </div>
 
       <!-- Ações -->
@@ -362,10 +375,32 @@
       <button id="modal-fechar" class="btn-icone" aria-label="Fechar vídeo"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-video-wrapper">
-      <iframe id="modal-iframe" src="" title="Vídeo demonstrativo do exercício" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div id="modal-player"></div>
+      <div id="modal-video-erro" class="modal-video-erro">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <p>Este vídeo não pode ser reproduzido aqui (o dono do vídeo restringiu a exibição incorporada).</p>
+        <a id="modal-link-youtube" href="#" target="_blank" rel="noopener" class="btn btn-primario">
+          Assistir no YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
     </div>
     <p id="modal-dica" class="modal-dica"></p>
+  </div>
+</div>
+
+<!-- ===================== MODAL DE ATUALIZAÇÃO DE PESO ===================== -->
+<div id="modal-peso" class="modal-overlay">
+  <div class="modal-conteudo modal-conteudo-pequena">
+    <div class="modal-cabecalho">
+      <h3>Atualizar peso</h3>
+      <button id="modal-peso-fechar" class="btn-icone" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-peso-corpo">
+      <label for="input-novo-peso">Peso atual (kg)</label>
+      <input type="number" id="input-novo-peso" class="input-texto" min="30" max="300" step="0.1">
+      <button id="btn-salvar-peso" class="btn btn-primario btn-full">Salvar peso</button>
+      <div id="historico-peso" class="historico-peso"></div>
+    </div>
   </div>
 </div>
 

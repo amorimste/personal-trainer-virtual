@@ -9,6 +9,7 @@ const CHAVE_TEMA = 'ptv_tema';
 const CHAVE_RESPOSTAS = 'ptv_respostas';
 const CHAVE_TREINO = 'ptv_treino';
 const CHAVE_PROGRESSO = 'ptv_progresso';
+const CHAVE_PESOS = 'ptv_pesos';
 
 // ===================== ESTADO DO WIZARD =====================
 const TOTAL_PASSOS = 11;
@@ -109,7 +110,7 @@ function validarPasso(numero) {
     case 1:
       return document.getElementById('campo-nome').value.trim().length > 0;
     case 2:
-      return !!form.querySelector('input[name="objetivo"]:checked');
+      return form.querySelectorAll('input[name="objetivo"]:checked').length > 0;
     case 3:
       return document.getElementById('campo-peso').value && document.getElementById('campo-altura').value;
     case 4:
@@ -180,6 +181,7 @@ form.addEventListener('submit', (evento) => {
     const treino = gerarTreino(respostas);
     salvarJSON(CHAVE_TREINO, treino);
     salvarJSON(CHAVE_PROGRESSO, {}); // zera progresso ao gerar um treino novo
+    salvarJSON(CHAVE_PESOS, [{ data: new Date().toISOString(), peso: respostas.peso }]); // reinicia histórico de peso
     renderizarResultado(treino, respostas);
     mostrarTela(telaResultado);
   }, 2200);
@@ -211,7 +213,7 @@ function coletarRespostas() {
 
   return {
     nome: document.getElementById('campo-nome').value.trim(),
-    objetivo: form.querySelector('input[name="objetivo"]:checked').value,
+    objetivos: Array.from(form.querySelectorAll('input[name="objetivo"]:checked')).map(c => c.value),
     peso, altura,
     idade: parseInt(document.getElementById('campo-idade').value, 10),
     sexo: form.querySelector('input[name="sexo"]:checked').value,
@@ -260,6 +262,36 @@ const FOCO_GRUPOS_EXTRAS = {
   costas: ['costas'],
   full: []
 };
+
+// Extrai [min, max] de uma faixa de repetições tipo "8-12"
+function parseFaixaReps(str) {
+  const match = str.match(/(\d+)\s*-\s*(\d+)/);
+  return match ? [parseInt(match[1], 10), parseInt(match[2], 10)] : null;
+}
+
+// Combina as configurações de um ou mais objetivos selecionados em uma única configuração efetiva
+function combinarObjetivos(objetivosSelecionados) {
+  const lista = objetivosSelecionados && objetivosSelecionados.length ? objetivosSelecionados : ['saude'];
+  const configs = lista.map(o => OBJETIVOS_CONFIG[o]);
+
+  const label = configs.map(c => c.label).join(' + ');
+  const texto = configs.map(c => c.texto).join(' ');
+  const descansoAjuste = Math.round(configs.reduce((soma, c) => soma + c.descansoAjuste, 0) / configs.length);
+  const cardioExtra = configs.some(c => c.cardioExtra);
+  const duracaoCardioExtra = Math.max(0, ...configs.map(c => (c.cardioExtra ? c.duracaoCardioExtra : 0)));
+
+  const faixas = configs.map(c => parseFaixaReps(c.repsRange)).filter(Boolean);
+  let repsRange;
+  if (faixas.length) {
+    const minMedio = Math.round(faixas.reduce((s, f) => s + f[0], 0) / faixas.length);
+    const maxMedio = Math.round(faixas.reduce((s, f) => s + f[1], 0) / faixas.length);
+    repsRange = `${minMedio}-${maxMedio}${lista.includes('reabilitacao') ? ' (controlado)' : ''}`;
+  } else {
+    repsRange = configs[0].repsRange;
+  }
+
+  return { label, repsRange, descansoAjuste, cardioExtra, duracaoCardioExtra, texto };
+}
 
 function embaralhar(lista) {
   const copia = [...lista];
@@ -324,7 +356,7 @@ function montarExercicioCardioOuMobilidade(ex, duracaoOverride) {
 
 function gerarTreino(respostas) {
   const divisao = DIVISOES_TREINO[respostas.frequencia];
-  const objConfig = OBJETIVOS_CONFIG[respostas.objetivo];
+  const objConfig = combinarObjetivos(respostas.objetivos);
   const numExerciciosForca = EXERCICIOS_POR_TEMPO[respostas.tempo];
   const restricoesUser = respostas.restricoes.filter(r => r !== 'nenhuma');
 
@@ -380,7 +412,7 @@ function gerarTreino(respostas) {
 
   return {
     geradoEm: new Date().toISOString(),
-    objetivo: respostas.objetivo,
+    objetivos: respostas.objetivos,
     frequencia: respostas.frequencia,
     dias
   };
@@ -390,15 +422,23 @@ function gerarTreino(respostas) {
 // RENDERIZAÇÃO DA TELA DE RESULTADO
 // ===================================================================
 
+function pesoAtual(respostas) {
+  const pesos = lerJSON(CHAVE_PESOS, []);
+  return pesos.length ? pesos[pesos.length - 1].peso : respostas.peso;
+}
+
 function renderizarResultado(treino, respostas) {
-  const imc = calcularIMC(respostas.peso, respostas.altura);
-  const objConfig = OBJETIVOS_CONFIG[respostas.objetivo];
+  const pesoUsado = pesoAtual(respostas);
+  const imc = calcularIMC(pesoUsado, respostas.altura);
+  const objConfig = combinarObjetivos(respostas.objetivos);
 
   document.getElementById('resumo-nome').textContent = respostas.nome ? `Treino de ${respostas.nome}` : 'Seu Treino';
   document.getElementById('resumo-frase').textContent = FRASES_MOTIVACIONAIS[Math.floor(Math.random() * FRASES_MOTIVACIONAIS.length)];
   document.getElementById('resumo-objetivo').textContent = objConfig.label;
   document.getElementById('resumo-imc').textContent = `${imc.valor} (${imc.classificacao})`;
   document.getElementById('resumo-frequencia').textContent = `${respostas.frequencia}x por semana`;
+  document.getElementById('resumo-peso').innerHTML = `${pesoUsado}kg <button id="btn-atualizar-peso" class="btn-link" title="Atualizar peso"><i class="fa-solid fa-pen"></i></button>`;
+  document.getElementById('btn-atualizar-peso').addEventListener('click', abrirModalPeso);
 
   const restricoesReais = respostas.restricoes.filter(r => r !== 'nenhuma');
   const avisoEl = document.getElementById('resumo-restricoes-aviso');
@@ -413,6 +453,7 @@ function renderizarResultado(treino, respostas) {
 
   renderizarListaTreinos(treino);
   atualizarContadorConcluidos();
+  renderizarCoachIA();
 }
 
 function renderizarListaTreinos(treino) {
@@ -469,6 +510,7 @@ function renderizarListaTreinos(treino) {
           </div>
           <div class="exercicio-dica"><i class="fa-solid fa-lightbulb"></i> ${ex.dica}</div>
         </div>
+        <button class="btn-trocar" title="Trocar por outro exercício"><i class="fa-solid fa-shuffle"></i></button>
       `;
 
       const checkbox = item.querySelector('.exercicio-check');
@@ -479,10 +521,16 @@ function renderizarListaTreinos(treino) {
         item.querySelector('.exercicio-nome').classList.toggle('concluido', checkbox.checked);
         atualizarContadoresLocais();
         atualizarContadorConcluidos();
+        renderizarCoachIA();
       });
 
       const nomeLinha = item.querySelector('.exercicio-nome-linha');
       nomeLinha.addEventListener('click', () => abrirModalVideo(ex));
+
+      item.querySelector('.btn-trocar').addEventListener('click', (e) => {
+        e.stopPropagation();
+        trocarExercicio(diaIdx, exIdx);
+      });
 
       listaExercicios.appendChild(item);
     });
@@ -519,32 +567,239 @@ function atualizarContadorConcluidos() {
   document.getElementById('resumo-concluidos').textContent = total;
 }
 
+// Troca um exercício por outra opção válida do mesmo grupo muscular, respeitando
+// equipamento, nível e restrições de saúde do usuário, sem repetir outro já usado no dia.
+function trocarExercicio(diaIdx, exIdx) {
+  const treino = lerJSON(CHAVE_TREINO, null);
+  const respostas = lerJSON(CHAVE_RESPOSTAS, null);
+  if (!treino || !respostas) return;
+
+  const dia = treino.dias[diaIdx];
+  const exAtual = dia.exercicios[exIdx];
+  const idsUsadosNoDia = new Set(dia.exercicios.map(e => e.id));
+  const alternativas = embaralhar(poolDoGrupo(exAtual.grupo, respostas)).filter(ex => !idsUsadosNoDia.has(ex.id));
+
+  if (alternativas.length === 0) {
+    alert('Não encontramos outra opção disponível para esse grupo muscular com seu equipamento e restrições atuais.');
+    return;
+  }
+
+  const objConfig = combinarObjetivos(respostas.objetivos);
+  dia.exercicios[exIdx] = montarExercicioForca(alternativas[0], respostas.nivel, objConfig);
+  salvarJSON(CHAVE_TREINO, treino);
+
+  const progresso = lerJSON(CHAVE_PROGRESSO, {});
+  delete progresso[`${diaIdx}_${exIdx}`];
+  salvarJSON(CHAVE_PROGRESSO, progresso);
+
+  const expandidos = Array.from(document.querySelectorAll('.dia-card')).map(c => c.classList.contains('expandido'));
+  renderizarListaTreinos(treino);
+  document.querySelectorAll('.dia-card').forEach((c, i) => { if (expandidos[i]) c.classList.add('expandido'); });
+  atualizarContadorConcluidos();
+  renderizarCoachIA();
+}
+
 // ===================================================================
-// MODAL DE VÍDEO
+// MODAL DE VÍDEO — usa a API oficial do YouTube (IFrame Player API) para
+// detectar quando o dono do vídeo restringiu a exibição incorporada e,
+// nesse caso, mostrar um link direto para assistir no YouTube.
 // ===================================================================
 
 const modal = document.getElementById('modal-video');
-const modalIframe = document.getElementById('modal-iframe');
 const modalTitulo = document.getElementById('modal-titulo');
 const modalDica = document.getElementById('modal-dica');
+const modalErro = document.getElementById('modal-video-erro');
+const modalLinkYoutube = document.getElementById('modal-link-youtube');
+
+let ytApiPronta = false;
+let ytPlayer = null;
+let videoIdPendente = null;
+
+(function carregarYouTubeAPI() {
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+})();
+
+window.onYouTubeIframeAPIReady = function () {
+  ytApiPronta = true;
+  if (videoIdPendente) {
+    criarPlayer(videoIdPendente);
+    videoIdPendente = null;
+  }
+};
+
+function recriarContainerPlayer() {
+  const antigo = document.getElementById('modal-player');
+  const novo = document.createElement('div');
+  novo.id = 'modal-player';
+  antigo.replaceWith(novo);
+  return novo;
+}
+
+function criarPlayer(videoId) {
+  recriarContainerPlayer();
+  if (ytPlayer) {
+    try { ytPlayer.destroy(); } catch (e) { /* já destruído */ }
+    ytPlayer = null;
+  }
+  if (!ytApiPronta || !window.YT || !window.YT.Player) {
+    videoIdPendente = videoId;
+    return;
+  }
+  ytPlayer = new YT.Player('modal-player', {
+    videoId,
+    playerVars: { rel: 0, modestbranding: 1 },
+    events: { onError: mostrarErroVideo }
+  });
+}
+
+function mostrarErroVideo() {
+  document.getElementById('modal-player').style.display = 'none';
+  modalErro.classList.add('visivel');
+}
 
 function abrirModalVideo(ex) {
   modalTitulo.textContent = ex.nome;
   modalDica.textContent = ex.dica;
-  modalIframe.src = ex.videoId
-    ? `https://www.youtube.com/embed/${ex.videoId}?rel=0`
+  modalErro.classList.remove('visivel');
+  modalLinkYoutube.href = ex.videoId
+    ? `https://www.youtube.com/watch?v=${ex.videoId}`
     : `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.query)}`;
+
+  if (ex.videoId) {
+    const container = recriarContainerPlayer();
+    container.style.display = 'block';
+    criarPlayer(ex.videoId);
+  } else {
+    mostrarErroVideo();
+  }
   modal.classList.add('visivel');
 }
 
 function fecharModalVideo() {
   modal.classList.remove('visivel');
-  modalIframe.src = '';
+  if (ytPlayer) {
+    try { ytPlayer.destroy(); } catch (e) { /* já destruído */ }
+    ytPlayer = null;
+  }
 }
 
 document.getElementById('modal-fechar').addEventListener('click', fecharModalVideo);
 modal.addEventListener('click', (e) => { if (e.target === modal) fecharModalVideo(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharModalVideo(); });
+
+// ===================================================================
+// ATUALIZAÇÃO DE PESO
+// ===================================================================
+
+const modalPeso = document.getElementById('modal-peso');
+const inputNovoPeso = document.getElementById('input-novo-peso');
+
+function abrirModalPeso() {
+  const respostas = lerJSON(CHAVE_RESPOSTAS, {});
+  inputNovoPeso.value = pesoAtual(respostas);
+  renderizarHistoricoPeso();
+  modalPeso.classList.add('visivel');
+}
+
+function fecharModalPeso() {
+  modalPeso.classList.remove('visivel');
+}
+
+function renderizarHistoricoPeso() {
+  const pesos = lerJSON(CHAVE_PESOS, []);
+  const container = document.getElementById('historico-peso');
+  container.innerHTML = pesos.slice().reverse().map(registro => {
+    const data = new Date(registro.data).toLocaleDateString('pt-BR');
+    return `<div class="historico-peso-item"><span>${data}</span><span>${registro.peso}kg</span></div>`;
+  }).join('');
+}
+
+document.getElementById('modal-peso-fechar').addEventListener('click', fecharModalPeso);
+modalPeso.addEventListener('click', (e) => { if (e.target === modalPeso) fecharModalPeso(); });
+
+document.getElementById('btn-salvar-peso').addEventListener('click', () => {
+  const novoPeso = parseFloat(inputNovoPeso.value);
+  if (!novoPeso || novoPeso < 30 || novoPeso > 300) {
+    alert('Digite um peso válido (entre 30 e 300 kg).');
+    return;
+  }
+  const pesos = lerJSON(CHAVE_PESOS, []);
+  pesos.push({ data: new Date().toISOString(), peso: novoPeso });
+  salvarJSON(CHAVE_PESOS, pesos);
+
+  const respostas = lerJSON(CHAVE_RESPOSTAS, {});
+  const imc = calcularIMC(novoPeso, respostas.altura);
+  document.getElementById('resumo-imc').textContent = `${imc.valor} (${imc.classificacao})`;
+  document.getElementById('resumo-peso').innerHTML = `${novoPeso}kg <button id="btn-atualizar-peso" class="btn-link" title="Atualizar peso"><i class="fa-solid fa-pen"></i></button>`;
+  document.getElementById('btn-atualizar-peso').addEventListener('click', abrirModalPeso);
+
+  renderizarHistoricoPeso();
+  renderizarCoachIA();
+});
+
+// ===================================================================
+// COACH VIRTUAL (IA local — roda 100% no navegador, sem enviar dados)
+// ===================================================================
+
+function gerarInsightsIA() {
+  const respostas = lerJSON(CHAVE_RESPOSTAS, null);
+  const treino = lerJSON(CHAVE_TREINO, null);
+  const progresso = lerJSON(CHAVE_PROGRESSO, {});
+  const pesos = lerJSON(CHAVE_PESOS, []);
+  if (!respostas || !treino) return [];
+
+  const dicas = [];
+  const totalExercicios = treino.dias.reduce((soma, d) => soma + d.exercicios.length, 0);
+  const concluidos = Object.values(progresso).filter(Boolean).length;
+  const percentual = totalExercicios ? Math.round((concluidos / totalExercicios) * 100) : 0;
+
+  if (percentual === 0) {
+    dicas.push('Você ainda não marcou nenhum exercício como concluído nesta semana. Que tal começar agora pelo primeiro treino?');
+  } else if (percentual < 40) {
+    dicas.push(`Você concluiu ${percentual}% do treino da semana. Ainda dá tempo de recuperar o ritmo!`);
+  } else if (percentual < 80) {
+    dicas.push(`Você já concluiu ${percentual}% do treino da semana. Continue assim!`);
+  } else {
+    dicas.push(`Excelente! Você já concluiu ${percentual}% do treino da semana. 💪`);
+  }
+
+  const objetivos = respostas.objetivos || [];
+  if (pesos.length >= 2) {
+    const primeiro = pesos[0].peso;
+    const ultimo = pesos[pesos.length - 1].peso;
+    const delta = +(ultimo - primeiro).toFixed(1);
+    if (delta !== 0) {
+      const direcao = delta > 0 ? 'ganhou' : 'perdeu';
+      dicas.push(`Desde que começou o acompanhamento, você ${direcao} ${Math.abs(delta)}kg.`);
+      if (objetivos.includes('emagrecimento') && delta > 0) {
+        dicas.push('Seu peso subiu desde o início, e seu objetivo inclui emagrecimento. Revise a alimentação e a consistência dos treinos.');
+      }
+      if (objetivos.includes('hipertrofia') && delta < 0) {
+        dicas.push('Seu peso caiu desde o início, e seu objetivo inclui hipertrofia. Considere aumentar a ingestão calórica e proteica.');
+      }
+    } else {
+      dicas.push('Seu peso está estável desde o início do acompanhamento.');
+    }
+  } else {
+    dicas.push('Registre seu peso periodicamente (clique no lápis ao lado do peso atual) para receber acompanhamento de evolução.');
+  }
+
+  const pesoUsado = pesoAtual(respostas);
+  const imc = calcularIMC(pesoUsado, respostas.altura);
+  if (imc.classificacao !== 'Peso normal') {
+    dicas.push(`Seu IMC atual (${imc.valor}) está na faixa "${imc.classificacao}" — apenas uma referência geral. Converse com um profissional para uma avaliação completa.`);
+  }
+
+  return dicas;
+}
+
+function renderizarCoachIA() {
+  const lista = document.getElementById('coach-lista');
+  const dicas = gerarInsightsIA();
+  lista.innerHTML = dicas.map(dica => `<li>${dica}</li>`).join('');
+}
 
 // ===================================================================
 // AÇÕES DA TELA DE RESULTADO
@@ -554,6 +809,7 @@ document.getElementById('btn-novo-treino').addEventListener('click', () => {
   if (!confirm('Isso vai apagar o treino atual e abrir um novo questionário. Deseja continuar?')) return;
   localStorage.removeItem(CHAVE_TREINO);
   localStorage.removeItem(CHAVE_PROGRESSO);
+  localStorage.removeItem(CHAVE_PESOS);
   form.reset();
   mostrarTela(telaQuestionario);
   irParaPasso(1);
@@ -569,7 +825,7 @@ document.getElementById('btn-whatsapp').addEventListener('click', () => {
   const treino = lerJSON(CHAVE_TREINO, null);
   if (!treino) return;
   let texto = `Confira meu treino personalizado, gerado pelo Personal Trainer Virtual! 💪\n\n`;
-  texto += `Aluno(a): ${respostas.nome}\nObjetivo: ${OBJETIVOS_CONFIG[respostas.objetivo].label}\n\n`;
+  texto += `Aluno(a): ${respostas.nome}\nObjetivo: ${combinarObjetivos(respostas.objetivos).label}\n\n`;
   treino.dias.forEach(dia => {
     texto += `📌 ${dia.nome}\n`;
     dia.exercicios.forEach(ex => { texto += `- ${ex.nome}: ${ex.series}x ${ex.reps}\n`; });
