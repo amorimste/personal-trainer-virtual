@@ -372,7 +372,68 @@ const EXERCICIOS = [
   { id: 'alongamento-ombro', nome: 'Alongamento de Ombro e Braços', grupo: 'mobilidade', tipo: 'mobilidade',
     nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
     impacto: 'baixo', query: 'alongamento de ombro e braços', duracaoBase: 5, descansoBase: 0,
-    dica: 'Movimentos suaves, nunca force além do conforto.', restricoes: [] }
+    dica: 'Movimentos suaves, nunca force além do conforto.', restricoes: [] },
+
+  // ===================== MÁQUINAS DE ACADEMIA (variedade além do treino livre) =====================
+  { id: 'desenvolvimento-maquina', nome: 'Desenvolvimento de Ombro na Máquina', grupo: 'ombro', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'desenvolvimento de ombro na máquina execução correta', seriesBase: 3, repsBase: '10-12', descansoBase: 60,
+    dica: 'Mantenha os cotovelos alinhados à frente do tronco e as escápulas fixas no encosto.', restricoes: ['ombro'] },
+
+  { id: 'elevacao-lateral-cabo', nome: 'Elevação Lateral no Cabo', grupo: 'ombro', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'elevação lateral no cabo execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 45,
+    dica: 'Mantenha tensão constante no cabo e evite usar impulso do corpo.', restricoes: ['ombro'] },
+
+  { id: 'crucifixo-invertido-maquina', nome: 'Crucifixo Invertido na Máquina (Peck Deck Invertido)', grupo: 'ombro', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'crucifixo invertido máquina peck deck execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 50,
+    dica: 'Aperte as escápulas ao final do movimento para ativar bem o deltoide posterior.', restricoes: ['ombro'] },
+
+  { id: 'rosca-cabo', nome: 'Rosca Direta no Cabo', grupo: 'biceps', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'rosca direta no cabo execução correta', seriesBase: 3, repsBase: '10-12', descansoBase: 45,
+    dica: 'Mantenha os cotovelos fixos ao lado do corpo durante todo o movimento.', restricoes: [] },
+
+  { id: 'rosca-martelo-cabo', nome: 'Rosca Martelo na Corda (Cabo)', grupo: 'biceps', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'rosca martelo na corda cabo execução correta', seriesBase: 3, repsBase: '10-12', descansoBase: 45,
+    dica: 'Pegada neutra na corda, sem deixar o ombro subir durante o movimento.', restricoes: [] },
+
+  { id: 'supino-maquina', nome: 'Supino na Máquina (Chest Press)', grupo: 'peito', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'supino máquina chest press execução correta', seriesBase: 3, repsBase: '10-12', descansoBase: 60,
+    dica: 'Mantenha as escápulas travadas no encosto e não projete os ombros para frente.', restricoes: ['ombro'] },
+
+  { id: 'peck-deck', nome: 'Peck Deck / Voador (Máquina)', grupo: 'peito', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'peck deck voador máquina execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 50,
+    dica: 'Ajuste o banco para os braços ficarem na altura dos ombros e contraia o peitoral ao final.', restricoes: ['ombro'] },
+
+  { id: 'triceps-maquina', nome: 'Tríceps na Polia com Barra', grupo: 'triceps', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'tríceps pulley barra w execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 45,
+    dica: 'Cotovelos fixos ao lado do corpo, estenda totalmente sem travar com força.', restricoes: ['ombro'] },
+
+  { id: 'agachamento-smith', nome: 'Agachamento no Smith', grupo: 'pernas', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'alto', query: 'agachamento no smith execução correta', seriesBase: 3, repsBase: '10-12', descansoBase: 60,
+    dica: 'A barra guiada facilita o equilíbrio, mas mantenha os pés um pouco à frente do corpo.', restricoes: ['joelho'] },
+
+  { id: 'gluteo-maquina', nome: 'Glúteo no Cabo (Cross Over)', grupo: 'gluteos', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'glúteo no cabo cross over execução correta', seriesBase: 3, repsBase: '12-15 cada perna', descansoBase: 45,
+    dica: 'Mantenha o tronco levemente inclinado à frente e o core contraído durante a extensão.', restricoes: [] },
+
+  { id: 'abdominal-cabo', nome: 'Abdominal na Polia Alta (Cable Crunch)', grupo: 'abdomen', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'abdominal crunch polia alta execução correta', seriesBase: 3, repsBase: '15-20', descansoBase: 30,
+    dica: 'Flexione a coluna levando o queixo em direção ao umbigo, sem puxar com os braços.', restricoes: ['lombar'] },
+
+  { id: 'panturrilha-leg-press', nome: 'Panturrilha no Leg Press', grupo: 'panturrilha', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'panturrilha no leg press 45 execução correta', seriesBase: 3, repsBase: '15-20', descansoBase: 30,
+    dica: 'Empurre com a ponta dos pés, buscando amplitude máxima em cada repetição.', restricoes: [] }
 ];
 
 /*
@@ -438,7 +499,19 @@ const VIDEO_IDS = {
   'marcha-estacionaria': 'qHO4yxAdoYY',
   'alongamento-pernas': 'O2qEPsnrxYY',
   'alongamento-costas': 'kpGcBev6DPY',
-  'alongamento-ombro': 'aDYhstkP15U'
+  'alongamento-ombro': 'aDYhstkP15U',
+  'desenvolvimento-maquina': 'Q7K6DI9R-A8',
+  'elevacao-lateral-cabo': '9zh-c9JQN9k',
+  'crucifixo-invertido-maquina': 'pv1oEtejkrA',
+  'rosca-cabo': 'YANQWtVF8nA',
+  'rosca-martelo-cabo': '09EnOKIgsx8',
+  'supino-maquina': 'KlhflSA6624',
+  'peck-deck': 'a5XwjsD3AOI',
+  'triceps-maquina': 'UJbJ95IyfhY',
+  'agachamento-smith': 'uDBQtlCLQ0Y',
+  'gluteo-maquina': 'CCuxb0gSo9w',
+  'abdominal-cabo': 'wrCw315SW4c',
+  'panturrilha-leg-press': 'F7_8z_7Kwks'
 };
 
 // Associa o ID do vídeo a cada exercício da base
