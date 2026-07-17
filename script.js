@@ -251,7 +251,7 @@ function calcularIMC(peso, alturaCm) {
 
 // IDs de exercícios usados especificamente para aquecimento e alongamento
 const IDS_AQUECIMENTO = ['aquecimento-articular', 'polichinelo-leve', 'marcha-estacionaria'];
-const IDS_ALONGAMENTO = ['alongamento-pernas', 'alongamento-costas', 'alongamento-ombro'];
+const IDS_ALONGAMENTO = ['alongamento-pernas', 'alongamento-costas', 'alongamento-ombro', 'alongamento-quadril'];
 
 // Grupos extras a priorizar quando o usuário escolhe um foco muscular
 const FOCO_GRUPOS_EXTRAS = {

@@ -433,7 +433,68 @@ const EXERCICIOS = [
   { id: 'panturrilha-leg-press', nome: 'Panturrilha no Leg Press', grupo: 'panturrilha', tipo: 'forca',
     nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
     impacto: 'baixo', query: 'panturrilha no leg press 45 execução correta', seriesBase: 3, repsBase: '15-20', descansoBase: 30,
-    dica: 'Empurre com a ponta dos pés, buscando amplitude máxima em cada repetição.', restricoes: [] }
+    dica: 'Empurre com a ponta dos pés, buscando amplitude máxima em cada repetição.', restricoes: [] },
+
+  // ===================== MAIS VARIEDADE (principalmente casa sem equipamento) =====================
+  { id: 'ponte-unilateral', nome: 'Elevação de Quadril Unilateral', grupo: 'gluteos', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'elevação de quadril unilateral execução correta', seriesBase: 3, repsBase: '12-15 cada perna', descansoBase: 45,
+    dica: 'Mantenha o quadril alinhado, evitando girar para o lado durante a subida.', restricoes: [] },
+
+  { id: 'bom-dia-peso-corporal', nome: 'Bom Dia (Good Morning) com Peso Corporal', grupo: 'posterior', tipo: 'forca',
+    nivel: ['intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'bom dia good morning peso corporal execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 45,
+    dica: 'Quadril para trás mantendo a coluna neutra, sinta o alongamento no posterior de coxa.', restricoes: ['lombar'] },
+
+  { id: 'rosca-isometrica-parede', nome: 'Rosca Isométrica (Contra Objeto Fixo)', grupo: 'biceps', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'rosca isométrica bíceps sem peso execução', seriesBase: 3, repsBase: '20-30s cada braço', descansoBase: 30,
+    dica: 'Pressione com força máxima contra um objeto fixo, como uma mesa ou batente de porta.', restricoes: [] },
+
+  { id: 'remada-invertida-mesa', nome: 'Remada Invertida na Mesa', grupo: 'costas', tipo: 'forca',
+    nivel: ['intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'remada invertida na mesa exercício em casa execução', seriesBase: 3, repsBase: '10-15', descansoBase: 60,
+    dica: 'Use uma mesa firme e resistente, mantenha o corpo reto como uma prancha durante o movimento.', restricoes: ['ombro'] },
+
+  { id: 'flexao-diamante', nome: 'Flexão Diamante', grupo: 'triceps', tipo: 'forca',
+    nivel: ['intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'flexão diamante execução correta', seriesBase: 3, repsBase: '8-12', descansoBase: 50,
+    dica: 'Mãos próximas formando um triângulo, cotovelos passando perto do corpo.', restricoes: ['ombro'] },
+
+  { id: 'flexao-inclinada', nome: 'Flexão Inclinada', grupo: 'peito', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'flexão inclinada execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 45,
+    dica: 'Apoie as mãos em uma superfície elevada (banco ou cadeira) para reduzir a dificuldade.', restricoes: ['ombro'] },
+
+  { id: 'flexao-pike', nome: 'Flexão Pike', grupo: 'ombro', tipo: 'forca',
+    nivel: ['intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'flexão pike pike push up execução correta', seriesBase: 3, repsBase: '8-12', descansoBase: 50,
+    dica: 'Quadril elevado formando um V invertido, desça a cabeça em direção ao chão.', restricoes: ['ombro'] },
+
+  { id: 'agachamento-isometrico-parede', nome: 'Agachamento Isométrico na Parede (Wall Sit)', grupo: 'pernas', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'agachamento isométrico na parede wall sit execução', seriesBase: 3, repsBase: '30-45s', descansoBase: 30,
+    dica: 'Costas apoiadas na parede, coxas paralelas ao chão — ótima opção de baixo impacto.', restricoes: [] },
+
+  { id: 'panturrilha-unilateral', nome: 'Panturrilha Unilateral em Pé', grupo: 'panturrilha', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'panturrilha unilateral em pé execução correta', seriesBase: 3, repsBase: '15-20 cada perna', descansoBase: 30,
+    dica: 'Apoie-se em uma parede para equilíbrio e busque amplitude total do movimento.', restricoes: [] },
+
+  { id: 'alongamento-quadril', nome: 'Alongamento de Quadril e Glúteos', grupo: 'mobilidade', tipo: 'mobilidade',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['casa-sem', 'casa-com', 'academia'],
+    impacto: 'baixo', query: 'alongamento de quadril e glúteos', duracaoBase: 5, descansoBase: 0,
+    dica: 'Mantenha a postura estável e respire fundo durante o alongamento.', restricoes: [] },
+
+  { id: 'mesa-flexora-unilateral', nome: 'Mesa Flexora Unilateral', grupo: 'posterior', tipo: 'forca',
+    nivel: ['intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'mesa flexora unilateral execução correta', seriesBase: 3, repsBase: '10-12 cada perna', descansoBase: 45,
+    dica: 'Movimento controlado, evite elevar o quadril do banco durante a flexão.', restricoes: [] },
+
+  { id: 'remada-cavalinho', nome: 'Remada Cavalinho (T-Bar Row)', grupo: 'costas', tipo: 'forca',
+    nivel: ['intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'remada cavalinho execução correta', seriesBase: 3, repsBase: '8-10', descansoBase: 75,
+    dica: 'Mantenha o tronco firme e puxe levando os cotovelos para trás, sem arredondar a coluna.', restricoes: ['lombar'] }
 ];
 
 /*
@@ -511,7 +572,19 @@ const VIDEO_IDS = {
   'agachamento-smith': 'uDBQtlCLQ0Y',
   'gluteo-maquina': 'CCuxb0gSo9w',
   'abdominal-cabo': 'wrCw315SW4c',
-  'panturrilha-leg-press': 'F7_8z_7Kwks'
+  'panturrilha-leg-press': 'F7_8z_7Kwks',
+  'ponte-unilateral': 'd6g_L9DwML4',
+  'bom-dia-peso-corporal': '9Gzmh4iHfLw',
+  'rosca-isometrica-parede': '8u6LvKyO_jM',
+  'remada-invertida-mesa': 'UYSAjUGcZLg',
+  'flexao-diamante': 'PAauHMIhWKg',
+  'flexao-inclinada': 'COpDKiH4byU',
+  'flexao-pike': 'TQH6U_hfS3Y',
+  'agachamento-isometrico-parede': 'NBaJzEt63XI',
+  'panturrilha-unilateral': 'AIFRZSv5lEI',
+  'alongamento-quadril': 'Dx0fesgXHc8',
+  'mesa-flexora-unilateral': 'AxhqsWRQfKc',
+  'remada-cavalinho': 'T_lUbPfCf6Y'
 };
 
 // Associa o ID do vídeo a cada exercício da base
