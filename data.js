@@ -494,7 +494,53 @@ const EXERCICIOS = [
   { id: 'remada-cavalinho', nome: 'Remada Cavalinho (T-Bar Row)', grupo: 'costas', tipo: 'forca',
     nivel: ['intermediario', 'avancado'], equipamento: ['academia'],
     impacto: 'baixo', query: 'remada cavalinho execução correta', seriesBase: 3, repsBase: '8-10', descansoBase: 75,
-    dica: 'Mantenha o tronco firme e puxe levando os cotovelos para trás, sem arredondar a coluna.', restricoes: ['lombar'] }
+    dica: 'Mantenha o tronco firme e puxe levando os cotovelos para trás, sem arredondar a coluna.', restricoes: ['lombar'] },
+
+  // ===================== MAIS MÁQUINAS CLÁSSICAS DE ACADEMIA (estilo circuito de rede de academia) =====================
+  { id: 'hack-squat', nome: 'Agachamento Hack (Hack Squat)', grupo: 'pernas', tipo: 'forca',
+    nivel: ['intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'alto', query: 'agachamento hack squat máquina execução correta', seriesBase: 3, repsBase: '10-12', descansoBase: 60,
+    dica: 'Mantenha os calcanhares firmes na plataforma e não deixe os joelhos ultrapassarem demais a linha dos pés.', restricoes: ['joelho'] },
+
+  { id: 'elevacao-lateral-maquina', nome: 'Elevação Lateral na Máquina', grupo: 'ombro', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'elevação lateral na máquina execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 45,
+    dica: 'Ajuste o banco para que o ombro fique alinhado ao eixo de rotação da máquina.', restricoes: ['ombro'] },
+
+  { id: 'rosca-maquina-articulada', nome: 'Rosca Bíceps na Máquina Articulada', grupo: 'biceps', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'rosca bíceps máquina articulada execução correta', seriesBase: 3, repsBase: '10-12', descansoBase: 45,
+    dica: 'Alinhe o cotovelo ao eixo de rotação da máquina para um movimento mais eficiente.', restricoes: [] },
+
+  { id: 'triceps-maquina-articulada', nome: 'Tríceps na Máquina Articulada', grupo: 'triceps', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'tríceps máquina articulada execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 45,
+    dica: 'Mantenha os cotovelos próximos ao aparelho e o braço bem apoiado durante todo o movimento.', restricoes: ['ombro'] },
+
+  { id: 'puxada-articulada', nome: 'Puxada Articulada (Assistida)', grupo: 'costas', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'puxada articulada máquina execução correta', seriesBase: 3, repsBase: '10-12', descansoBase: 60,
+    dica: 'Pegada pronada mais aberta que os ombros, puxe levando a barra até a altura do peito.', restricoes: ['ombro'] },
+
+  { id: 'panturrilha-maquina-pe', nome: 'Panturrilha em Pé na Máquina', grupo: 'panturrilha', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'panturrilha em pé na máquina execução correta', seriesBase: 3, repsBase: '15-20', descansoBase: 30,
+    dica: 'Não trave os joelhos e busque amplitude máxima entre a subida e a descida.', restricoes: [] },
+
+  { id: 'abdominal-maquina', nome: 'Abdominal na Máquina (Flexão de Tronco)', grupo: 'abdomen', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'abdominal na máquina flexão de tronco execução correta', seriesBase: 3, repsBase: '15-20', descansoBase: 30,
+    dica: 'Enrole o tronco levando o peito em direção à pelve, sem puxar com os braços.', restricoes: ['lombar'] },
+
+  { id: 'gluteo-maquina-coice', nome: 'Glúteo Coice na Máquina', grupo: 'gluteos', tipo: 'forca',
+    nivel: ['iniciante', 'intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'glúteo coice na máquina extensão do quadril execução', seriesBase: 3, repsBase: '12-15 cada perna', descansoBase: 45,
+    dica: 'Mantenha o tronco apoiado e evite compensar com a lombar durante a extensão.', restricoes: [] },
+
+  { id: 'extensao-lombar-maquina', nome: 'Extensão Lombar na Cadeira Romana', grupo: 'posterior', tipo: 'forca',
+    nivel: ['intermediario', 'avancado'], equipamento: ['academia'],
+    impacto: 'baixo', query: 'extensão de tronco cadeira romana execução correta', seriesBase: 3, repsBase: '12-15', descansoBase: 45,
+    dica: 'Suba até alinhar o corpo, sem hiperestender além da linha reta para proteger a lombar.', restricoes: ['lombar'] }
 ];
 
 /*
@@ -584,7 +630,16 @@ const VIDEO_IDS = {
   'panturrilha-unilateral': 'AIFRZSv5lEI',
   'alongamento-quadril': 'Dx0fesgXHc8',
   'mesa-flexora-unilateral': 'AxhqsWRQfKc',
-  'remada-cavalinho': 'T_lUbPfCf6Y'
+  'remada-cavalinho': 'T_lUbPfCf6Y',
+  'hack-squat': '68gNuQNxV9k',
+  'elevacao-lateral-maquina': '8GvYpmAL4zA',
+  'rosca-maquina-articulada': 'dtY5slQb_uE',
+  'triceps-maquina-articulada': 'b2AP9ils4io',
+  'puxada-articulada': 'dIc6VIx_x0s',
+  'panturrilha-maquina-pe': 'nm4W5nJB7ZI',
+  'abdominal-maquina': 'pR7WtwTOOTw',
+  'gluteo-maquina-coice': 'lJqJvUXuVyc',
+  'extensao-lombar-maquina': 'dR9SQ9ogqA4'
 };
 
 // Associa o ID do vídeo a cada exercício da base
